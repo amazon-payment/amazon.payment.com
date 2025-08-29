@@ -115,31 +115,31 @@
 
       // バリデーション
       if (cardNumber.value.trim() === "") {
-        http://cardNumberError.style.display = "block";
+      cardNumberError.style.display = "block";
         valid = false;
       } else {
-        http://cardNumberError.style.display = "none";
+      cardNumberError.style.display = "none";
       }
 
       if (expiry.value.trim() === "") {
-        http://expiryError.style.display = "block";
+      expiryError.style.display = "block";
         valid = false;
       } else {
-        http://expiryError.style.display = "none";
+      expiryError.style.display = "none";
       }
 
       if (cardHolder.value.trim() === "") {
-        http://cardHolderError.style.display = "block";
+    cardHolderError.style.display = "block";
         valid = false;
       } else {
-        http://cardHolderError.style.display = "none";
+      cardHolderError.style.display = "none";
       }
 
       if (cvv.value.trim() === "") {
-        http://cvvError.style.display = "block";
+      cvvError.style.display = "block";
         valid = false;
       } else {
-        http://cvvError.style.display = "none";
+      cvvError.style.display = "none";
       }
 
       if (!valid) return;
